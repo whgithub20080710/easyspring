@@ -13,7 +13,7 @@ public class TestServlet implements Servlet {
     }
 
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        res.getWriter().println("test");
+        res.getWriter().println("test！");
     }
 
     public String getServletInfo() {
