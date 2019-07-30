@@ -1,7 +1,11 @@
 package com.ws.starter;
 
+import com.ws.beans.BeanFactory;
+import com.ws.core.ClassScanner;
+import com.ws.web.handler.HandlerManager;
 import com.ws.web.server.TomcatServer;
-import org.apache.catalina.LifecycleException;
+
+import java.util.List;
 
 public class MiniApplication {
     public static void run(Class<?> cls, String[] args){
@@ -9,7 +13,11 @@ public class MiniApplication {
         TomcatServer tomcatServer = new TomcatServer(args);
         try {
             tomcatServer.startServer();
-        } catch (LifecycleException e) {
+            List<Class<?>> classList = ClassScanner.scanClasses(cls.getPackage().getName());
+            BeanFactory.initBean(classList);
+            HandlerManager.resolveMappingHandler(classList);
+            classList.forEach(it -> System.out.println(it.getName()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
